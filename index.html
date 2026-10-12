@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="物理学（物理の世界と先端技術）小テスト対策Webアプリケーション。第1回〜第3回講義内課題の完全再現、小テスト予想問題、重要語句暗記カード、論理条件を判定するスマート自動採点システムを搭載。">
+  <meta name="theme-color" content="#0b0f19">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>物理の世界と先端技術 小テスト対策アプリ</title>
+
+  <!-- Google Fonts: Outfit, Noto Sans JP, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Noto+Sans+JP:wght@400;500;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ヘッダー -->
+  <header>
+    <div class="header-container">
+      <div class="logo-group">
+        <div class="logo-badge" id="app-logo">Ψ</div>
+        <div class="header-title-box">
+          <h1 id="app-main-heading">物理の世界と先端技術 小テスト対策</h1>
+          <p id="app-sub-heading">第1回〜第3回 力学・対称性・保存則 完全制覇</p>
+        </div>
+      </div>
+      <div class="header-stats">
+        <div class="stat-pill" id="score-stat-pill">
+          <span>累計回答:</span> <strong id="stat-answered-count">0</strong> 問
+        </div>
+        <div class="stat-pill" id="mastery-stat-pill">
+          <span>合格率:</span> <strong id="stat-pass-rate">0%</strong>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- メインコンテンツ -->
+  <main>
+    <!-- ナビゲーションタブ -->
+    <nav class="tab-navigation" aria-label="学習モード選択">
+      <button class="nav-tab-btn active" id="tab-btn-lecture" data-tab="lecture">
+        🎓 講義内課題 完全制覇
+      </button>
+      <button class="nav-tab-btn" id="tab-btn-practice" data-tab="practice">
+        🎯 回別 予想問題演習
+      </button>
+      <button class="nav-tab-btn" id="tab-btn-exam" data-tab="exam">
+        ⏱️ 総合模擬小テスト
+      </button>
+      <button class="nav-tab-btn" id="tab-btn-vocab" data-tab="vocab">
+        📖 重要語句マスターカード
+      </button>
+    </nav>
+
+    <!-- モード1: 講義内課題モード -->
+    <section id="section-lecture" class="mode-section">
+      <div class="lecture-filter-bar" id="lecture-assignment-filters">
+        <button class="filter-chip active" data-filter="all">全回を表示</button>
+        <button class="filter-chip" data-filter="1">第1回：ニュートン力学と数値計算</button>
+        <button class="filter-chip" data-filter="2">第2回：基本方程式と対称性</button>
+        <button class="filter-chip" data-filter="3">第3回：対称性と保存則</button>
+      </div>
+
+      <div id="lecture-assignments-container">
+        <!-- JSで動的に問題カードを描画 -->
+      </div>
+    </section>
+
+    <!-- モード2: 予想問題演習モード -->
+    <section id="section-practice" class="mode-section" style="display: none;">
+      <div class="lecture-filter-bar" id="practice-filters">
+        <button class="filter-chip active" data-filter="all">全問題を表示</button>
+        <button class="filter-chip" data-filter="1">第1回 範囲</button>
+        <button class="filter-chip" data-filter="2">第2回 範囲</button>
+        <button class="filter-chip" data-filter="3">第3回 範囲</button>
+      </div>
+
+      <div id="practice-questions-container">
+        <!-- JSで動的に予想問題を描画 -->
+      </div>
+    </section>
+
+    <!-- モード3: 総合模擬小テストモード -->
+    <section id="section-exam" class="mode-section" style="display: none;">
+      <div class="exam-banner" id="exam-start-banner">
+        <div class="exam-banner-info">
+          <h2>第1回〜第3回 総合模擬小テスト（第4回小テスト想定）</h2>
+          <p>穴埋め問題 3問 ＋ 文章作成問題 2問 の計5問。制限時間15分で本番の実力を測定します。</p>
+        </div>
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div class="timer-box" id="exam-timer" style="display: none;">
+            ⏱️ <span id="timer-display">15:00</span>
+          </div>
+          <button class="btn btn-primary" id="btn-start-exam">模擬テストを開始する</button>
+        </div>
+      </div>
+
+      <div id="exam-questions-container" style="display: none;">
+        <!-- 試験中の問題一覧 -->
+      </div>
+
+      <div id="exam-result-container" style="display: none;">
+        <!-- 試験結果サマリー -->
+      </div>
+    </section>
+
+    <!-- モード4: 重要語句マスターカード -->
+    <section id="section-vocab" class="mode-section" style="display: none;">
+      <div style="background: rgba(30, 41, 69, 0.5); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px 18px; margin-bottom: 20px;">
+        <h3 style="font-size: 1rem; color: #fff; margin-bottom: 6px;">💡 先生からのアドバイス対策</h3>
+        <p style="font-size: 0.88rem; color: var(--text-muted); line-height: 1.6;">
+          「授業資料の色のついた重要語句を中心に勉強するとよい」というアドバイスに完全準拠！<br>
+          スライドに出てきた<span style="color: #f87171; font-weight: 700;">赤字語句</span>、<span style="color: #fb923c; font-weight: 700;">オレンジ字語句</span>、<span style="color: #34d399; font-weight: 700;">緑枠・重要法則</span>をすべてカード化しました。
+        </p>
+      </div>
+
+      <div class="lecture-filter-bar" id="vocab-filters">
+        <button class="filter-chip active" data-filter="all">すべて (全22語)</button>
+        <button class="filter-chip" data-filter="1">第1回 語句</button>
+        <button class="filter-chip" data-filter="2">第2回 語句</button>
+        <button class="filter-chip" data-filter="3">第3回 語句</button>
+      </div>
+
+      <div class="vocab-grid" id="vocab-grid-container">
+        <!-- JSでカードを描画 -->
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>物理の世界と先端技術 小テスト対策システム &copy; 2026 | スマート論理自動採点エンジン搭載</p>
+  </footer>
+
+  <!-- スクリプトの読み込み -->
+  <script src="questions.js"></script>
+  <script src="grading.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
